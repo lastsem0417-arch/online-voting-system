@@ -3,11 +3,16 @@ const router = express.Router();
 
 const {
 createElection,
-getElections
+getElections,
+deleteElection
 } = require("../controllers/electionController");
 
-router.post("/",createElection);
+// create election
+router.post("/create", createElection);
 
-router.get("/",getElections);
+// get all elections
+router.get("/", getElections);
+
+router.delete("/:id",deleteElection);
 
 module.exports = router;

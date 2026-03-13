@@ -43,7 +43,9 @@ token ? <Results/> : <Navigate to="/login"/>
 }/>
 
 <Route path="/admin" element={
-token ? <Admin/> : <Navigate to="/login"/>
+token && localStorage.getItem("role")==="admin"
+? <Admin/>
+: <Navigate to="/home"/>
 }/>
 
 </Routes>

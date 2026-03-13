@@ -5,30 +5,36 @@ function Vote(){
 
 const [elections,setElections] = useState([]);
 const [selectedElection,setSelectedElection] = useState("");
-
 const [candidates,setCandidates] = useState([]);
-
 const [votedElections,setVotedElections] = useState([]);
 
 const userId = localStorage.getItem("userId");
 
 
+// load elections + user vote status
 useEffect(()=>{
 
 axios.get("http://localhost:4000/api/elections")
-.then(res=>{
-setElections(res.data);
-});
+.then(res=>setElections(res.data));
 
-axios.get(`http://localhost:4000/api/auth/user/${userId}`)
-.then(res=>{
-setVotedElections(res.data.votedElections || []);
-});
+loadUserVotes();
 
 },[]);
 
 
+// load vote status
+const loadUserVotes = async()=>{
 
+const res = await axios.get(
+`http://localhost:4000/api/auth/user/${userId}`
+);
+
+setVotedElections(res.data.user?.votedElections || []);
+
+};
+
+
+// load candidates
 const loadCandidates = async(electionId)=>{
 
 setSelectedElection(electionId);
@@ -42,30 +48,41 @@ setCandidates(res.data);
 };
 
 
-
+// vote function
 const vote = async(candidateId)=>{
 
-if(votedElections.includes(selectedElection)){
-alert("You already voted in this election");
-return;
-}
+try{
 
-await axios.post("http://localhost:4000/api/vote",{
-
+const res = await axios.post(
+"http://localhost:4000/api/vote",
+{
 candidateId,
 userId,
 electionId:selectedElection
+}
+);
 
-});
+alert(res.data.message);
 
-alert("Vote submitted");
+// update vote state
+setVotedElections(res.data.votedElections);
 
-setVotedElections([...votedElections,selectedElection]);
+}catch(err){
+
+alert(err.response?.data?.message || "Vote error");
+
+}
 
 };
 
 
+// check voted
+const voted = votedElections.some(
+id => id.toString() === selectedElection
+);
 
+
+// UI
 return(
 
 <div style={{
@@ -75,10 +92,12 @@ color:"white",
 padding:"40px"
 }}>
 
-<h1>🗳 Elections</h1>
+<h1 style={{marginBottom:"30px"}}>
+🗳 Elections
+</h1>
 
 
-{/* ELECTION LIST */}
+{/* elections list */}
 
 <div style={{
 display:"flex",
@@ -95,9 +114,10 @@ onClick={()=>loadCandidates(e._id)}
 style={{
 background:"#3b82f6",
 border:"none",
-padding:"10px",
+padding:"10px 15px",
 color:"white",
-borderRadius:"5px"
+borderRadius:"6px",
+cursor:"pointer"
 }}
 >
 
@@ -111,7 +131,7 @@ borderRadius:"5px"
 
 
 
-{/* CANDIDATES */}
+{/* candidates */}
 
 <div style={{
 display:"grid",
@@ -119,11 +139,7 @@ gridTemplateColumns:"repeat(auto-fit,minmax(250px,1fr))",
 gap:"20px"
 }}>
 
-{candidates.map(c=>{
-
-const voted = votedElections.includes(selectedElection);
-
-return(
+{candidates.map(c=>(
 
 <div
 key={c._id}
@@ -131,12 +147,17 @@ style={{
 background:"#1e293b",
 padding:"20px",
 borderRadius:"10px",
-textAlign:"center"
+textAlign:"center",
+boxShadow:"0 0 10px #000"
 }}
 >
 
+<div style={{fontSize:"40px"}}>
+🧑‍💼
+</div>
+
 <h3>{c.name}</h3>
-<p>{c.party}</p>
+<p style={{color:"#94a3b8"}}>{c.party}</p>
 
 <button
 onClick={()=>vote(c._id)}
@@ -144,9 +165,10 @@ disabled={voted}
 style={{
 background:voted ? "gray":"#22c55e",
 border:"none",
-padding:"10px",
+padding:"10px 20px",
 color:"white",
-borderRadius:"5px"
+borderRadius:"6px",
+cursor:voted ? "not-allowed":"pointer"
 }}
 >
 
@@ -156,15 +178,13 @@ borderRadius:"5px"
 
 </div>
 
+))}
+
+</div>
+
+</div>
+
 );
-
-})}
-
-</div>
-
-</div>
-
-)
 
 }
 
