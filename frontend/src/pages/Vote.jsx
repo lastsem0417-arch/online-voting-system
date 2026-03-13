@@ -14,7 +14,7 @@ const userId = localStorage.getItem("userId");
 // load elections + user vote status
 useEffect(()=>{
 
-axios.get("https://online-voting-system-zy9r.onrender.com///api/elections")
+axios.get("https://online-voting-system-zy9r.onrender.com/api/elections")
 .then(res=>setElections(res.data));
 
 loadUserVotes();
@@ -26,7 +26,7 @@ loadUserVotes();
 const loadUserVotes = async()=>{
 
 const res = await axios.get(
-`https://online-voting-system-zy9r.onrender.com///api/auth/user/${userId}`
+`https://online-voting-system-zy9r.onrender.com/api/auth/user/${userId}`
 );
 
 setVotedElections(res.data.user?.votedElections || []);
@@ -40,7 +40,7 @@ const loadCandidates = async(electionId)=>{
 setSelectedElection(electionId);
 
 const res = await axios.get(
-`https://online-voting-system-zy9r.onrender.com///api/candidates/${electionId}`
+`https://online-voting-system-zy9r.onrender.com/api/candidates/${electionId}`
 );
 
 setCandidates(res.data);
@@ -54,7 +54,7 @@ const vote = async(candidateId)=>{
 try{
 
 const res = await axios.post(
-"https://online-voting-system-zy9r.onrender.com///api/vote",
+"https://online-voting-system-zy9r.onrender.com/api/vote",
 {
 candidateId,
 userId,

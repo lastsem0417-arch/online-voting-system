@@ -13,7 +13,7 @@ const login = async () => {
 try{
 
 const res = await axios.post(
-"https://online-voting-system-zy9r.onrender.com///api/auth/login",
+"https://online-voting-system-zy9r.onrender.com/api/auth/login",
 {
 email,
 password
