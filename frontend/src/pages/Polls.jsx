@@ -7,7 +7,7 @@ const [polls,setPolls] = useState([]);
 
 useEffect(()=>{
 
-axios.get("http://localhost:4000/api/polls")
+axios.get("https://online-voting-system-zy9r.onrender.com///api/polls")
 .then(res=>{
 setPolls(res.data);
 });
@@ -16,7 +16,7 @@ setPolls(res.data);
 
 const vote = async(pollId,index)=>{
 
-await axios.post("http://localhost:4000/api/polls/vote",{
+await axios.post("https://online-voting-system-zy9r.onrender.com///api/polls/vote",{
 pollId,
 optionIndex:index,
 userId:localStorage.getItem("userId")

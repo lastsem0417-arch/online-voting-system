@@ -18,7 +18,7 @@ const [selectedElection,setSelectedElection] = useState("");
 // ---------------- LOAD ELECTIONS ----------------
 
 const loadElections = ()=>{
-axios.get("http://localhost:4000/api/elections")
+axios.get("https://online-voting-system-zy9r.onrender.com///api/elections")
 .then(res=>setElections(res.data))
 .catch(err=>console.log(err));
 };
@@ -39,7 +39,7 @@ const createPoll = async()=>{
 if(!pollTitle) return alert("Enter poll title");
 
 await axios.post(
-"http://localhost:4000/api/polls/create",
+"https://online-voting-system-zy9r.onrender.com///api/polls/create",
 {
 title:pollTitle,
 options
@@ -61,7 +61,7 @@ const createElection = async()=>{
 if(!electionTitle) return alert("Enter election title");
 
 await axios.post(
-"http://localhost:4000/api/elections/create",
+"https://online-voting-system-zy9r.onrender.com///api/elections/create",
 {
 title:electionTitle,
 type:"candidate"
@@ -84,7 +84,7 @@ const deleteElection = async(id)=>{
 if(!window.confirm("Delete this election?")) return;
 
 await axios.delete(
-`http://localhost:4000/api/elections/${id}`
+`https://online-voting-system-zy9r.onrender.com///api/elections/${id}`
 );
 
 alert("Election Deleted");
@@ -101,7 +101,7 @@ const addCandidate = async()=>{
 if(!selectedElection) return alert("Select election");
 
 await axios.post(
-"http://localhost:4000/api/candidates/add",
+"https://online-voting-system-zy9r.onrender.com///api/candidates/add",
 {
 name:candidateName,
 party,

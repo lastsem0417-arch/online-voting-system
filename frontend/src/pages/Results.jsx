@@ -30,8 +30,8 @@ loadData();
 
 const loadData=async()=>{
 
-const eRes=await axios.get("http://localhost:4000/api/elections");
-const pRes=await axios.get("http://localhost:4000/api/polls");
+const eRes=await axios.get("https://online-voting-system-zy9r.onrender.com///api/elections");
+const pRes=await axios.get("https://online-voting-system-zy9r.onrender.com///api/polls");
 
 setElections(eRes.data);
 setPolls(pRes.data);
@@ -41,7 +41,7 @@ const obj={};
 for(const e of eRes.data){
 
 const r=await axios.get(
-`http://localhost:4000/api/candidates/results/${e._id}`
+`https://online-voting-system-zy9r.onrender.com///api/candidates/results/${e._id}`
 );
 
 obj[e._id]=r.data;

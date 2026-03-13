@@ -8,7 +8,7 @@ const [party,setParty] = useState("");
 
 const addCandidate = async()=>{
 
-await axios.post("http://localhost:4000/api/candidates/add",{
+await axios.post("https://online-voting-system-zy9r.onrender.com:///api/candidates/add",{
 name,
 party
 });

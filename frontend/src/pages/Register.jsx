@@ -12,7 +12,7 @@ const [password,setPassword] = useState("");
 
 const register = async () => {
 
-await axios.post("http://localhost:4000/api/auth/register",{
+await axios.post("https://online-voting-system-zy9r.onrender.com///api/auth/register",{
 name,
 email,
 password
